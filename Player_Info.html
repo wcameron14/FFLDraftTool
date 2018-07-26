@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Player Info</title>
+        <script src="db_connect.js"></script>
+        <script>
+            var xmlhttp;
+            import mysql from "mysql";
+            window.onload = function()
+            {
+                 var url = "https://www.fantasyfootballnerd.com/service/players/xml/9umch2c73e7c/";
+                 xmlhttp = new XMLHttpRequest();
+                 xmlhttp.open("GET", url, true);
+                 xmlhttp.onreadystatechange = playerProfile;
+                 xmlhttp.send();
+            }
+            
+            function playerProfile()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
+                    var theXML = xmlhttp.responseXML.documentElement.getElementsByTagName('Player');
+                    for(var i = 0; i < theXML.length; i++)
+                    {
+                        var active = theXML[i].getAttribute('active');
+                        var displayName = theXML[i].getAttribute('displayName');
+                        var position = theXML[i].getAttribute('position');
+                        var team = theXML[i].getAttribute('team');
+                        var jersey = theXML[i].getAttribute('jersey');
+
+                        if (active != 0) {
+                            var out = "<b>" + displayName + "</b><br/>";
+                            out += "Position: " + position + "<br/>";
+                            out += "Team: " + team + "<br/>";
+                            out += "Jersey Number: " + jersey + "<br/><br/>";
+
+
+                            console.group('Output for ' + displayName);
+                            console.log('active: ' + active);
+                            console.log('displayName: ' + displayName);
+                            console.log('position: ' + position);
+                            console.log('team: ' + team);
+                            console.log('jersey: ' + jersey);
+                            console.groupEnd();
+
+                            document.getElementById('result').innerHTML += out
+
+                            var con = createConnection({
+                                host: "localhost",
+                                user: "root",
+                                password: "F4nt4$yF00tb4ll!",
+                                database: "league_data"
+                            });
+                            var dbload = "INSERT INTO player_info (displayName, position, team, jersey) VALUES (displayName, position, team, jersey)";
+                            con.query(dbload, function (err, result) {
+                                if (err) throw err;
+                                console.log("records loaded");
+                            });
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="result"></div>
+    </body>
+</html>

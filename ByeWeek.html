@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bye Week</title>
+        <script>
+            var xmlhttp;
+            
+            window.onload = function()
+            {
+                 var url = "https://www.fantasyfootballnerd.com/service/byes/xml/9umch2c73e7c/";
+                 xmlhttp = new XMLHttpRequest();
+                 xmlhttp.open("GET", url, true);
+                 xmlhttp.onreadystatechange = byeWeeks;
+                 xmlhttp.send();
+            }
+            
+            function byeWeeks()
+            {
+                if(xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    var theXML = xmlhttp.responseXML.documentElement.getElementsByTagName('Week');
+                    for(var i = 0; i < theXML.length; i++)
+                    {
+                        var week = theXML[i].getAttribute('number');
+                        var teams = theXML[i].getElementsByTagName('Team');
+                        
+                        Array.from(teams).forEach(function(team) {
+                       
+                        var teams = team.getAttribute('code');
+                        var teamName = team.getAttribute('name');
+                            console.log(team.getAttribute('code'));
+                            console.log(theXML[i].getAttribute('number'));
+                        
+                        var out = "<table>";
+                            out += "<tr><td>" + teamName + "</td>" + "<td>" + teams + "</td>" + "<td>" + week + "</td></tr>";
+                        document.getElementById('result').innerHTML += out
+                        
+                        });
+                    }
+                       
+                    }
+                }
+        </script>
+
+    </head>
+    <body>
+        <div id="result"></div>
+    </body>
+</html>
