@@ -2,7 +2,7 @@
   "name": "ffldrafttool",
   "version": "1.0.0",
   "description": "A tool for fantasy football auction drafts. Imports players information and allows them to be selected and assigned to teams for a certain amount.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +13,7 @@
   "author": "Wade Cameron",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-validator": "^5.2.0",
     "mysql": "^2.16.0",
